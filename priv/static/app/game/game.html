@@ -1,124 +1,109 @@
-﻿<div ng-controller="GameController as gameController" class="container-fluid game-board">
+﻿<div ng-controller="GameController as gameController">
+    <header>
+        <div>
+            <b>Poker Bots</b>
+        </div>
+        <div>
+            {{gameController.currentPlayer.name}}
+        </div>
+    </header>
     <div ng-if="!gameController.game">
         <form class="form-signin" novalidate name="gameController.joinForm" ng-submit="gameController.submitJoin(gameController.joinForm)">
-            <h2 class="form-signin-heading">Pick a name</h2>
-            <input type="text" autofocus="" class="form-control" required name="Name" ng-model="gameController.Name" placeholder="Display Name" />
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Join Game</button>
+            <div style="max-width: 500px; margin: 0 auto;">
+                <h2 class="form-signin-heading">Pick a name</h2>
+                <input type="text" autofocus="" class="form-control" required name="Name" ng-model="gameController.Name" placeholder="Your Name" />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Join Game</button>
+            </div>
         </form>
     </div>
     <div ng-if="gameController.game">
-        <div class="row">
-            <div class="col-xs-6">
-                Game Name: <b>{{gameController.game.state.name}}</b>
-            </div>
-            <div class="col-xs-6" style="text-align: right;">
-                {{gameController.currentPlayer.name }} 
-                    <a style="cursor: pointer;" ng-click="gameController.submitPlaying(gameController.currentPlayer.name)">Playing?</a>
-            </div>
-        </div>
+        <div class="all-vote-area card-list">
+            <div>
+                <div class="card average clearfix">
+                    <div class="previous-number"></div>
+                    <div class="number">
+                        <span ng-show="!gameController.state.is_showing">
+                            <i class="fa fa-clock-o"></i>
+                        </span>
+                        <span ng-show="gameController.state.is_showing">{{gameController.average}}</span>
+                    </div>
 
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="players">
-                    <div class="player-container" ng-repeat="player in gameController.users track by player.name | orderBy : 'name'">
-                        <div class="flip-container" ng-class="{hover: gameController.state.is_showing}">
-                            <div class="flipper">
-                                <div class="front">
-                                    <!-- front content -->
-                                    <div class="card-container">
-                                        <div class="card">
-                                            <!-- Status -->
-                                            <div class="estimate status">
-                                                <i class="fa" ng-class="{
-                                                'fa-clock-o waiting': !player.vote,
-                                                'fa-check  done': player.vote,
-                                                }">
-                                                </i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="back">
-                                    <!-- back content -->
-                                    <div class="card-container">
-                                        <div class="card" ng-class="{ changed: player.vote != player.original_vote }">
-                                            <!-- Volunteer -->
-                                            <div class="volunteer" ng-show="player.vote != player.original_vote">
-                                                <span>{{player.original_vote}}</span>
-                                            </div>
-                                            <!-- Estimate -->
-                                            <div ng-show="gameController.state.is_showing" class="estimate">
-                                                <div>{{player.vote}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Player Name -->
-                        <div class="player-name">
-                            {{player.name}}
-                        </div>
+                    <div class="person">
+                        <div class="avi"></div>
+                        <div class="name">Average</div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="spectators">
-                    <strong>Spectators: </strong>
-                    <span ng-repeat="player in gameController.spectators | orderBy : 'name'">
-                        {{player.name}}{{$index < poker.spectators.length - 1 ? ',' : ''}}
+            <div ng-repeat="player in gameController.users track by player.name | orderBy : 'name'">
+                <div class="card" ng-class="{ changed: gameController.state.is_showing && player.vote != player.original_vote }">
+                    <div class="previous-number">
+                        <span ng-show="player.vote != player.original_vote">{{player.original_vote}}</span>
+                    </div>
+                    <div class="number">
+                        <span ng-show="!gameController.state.is_showing">
+                            <i class="fa" ng-class="{
+                            'fa-clock-o waiting': !player.vote,
+                            'fa-check  done': player.vote,
+                            }">
+                            </i>
+                        </span>
+                        <span ng-show="gameController.state.is_showing">{{player.vote || '?'}}</span>
+                    </div>
+
+                    <div class="person">
+                        <div class="avi">
+                            <img src="https://robohash.org/{{player.name}}?size=50x50" />
+                        </div>
+                        <div class="name">{{player.name}}</div>
+                    </div>
+                </div>
+                <div class="admin-player-tools" ng-if="gameController.currentPlayer.is_admin">
+                    <span ng-click="gameController.submitPlaying(player.name)" title="toggle playing"><i class="fa fa-arrow-down"></i></span>
+                    <span ng-click="gameController.submitPromote(player.name)" title="promote">
+                        <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
                     </span>
                 </div>
             </div>
         </div>
 
-
-        <div ng-show="gameController.currentPlayer.is_player">
-            <div class="row">
-                <div class="col-xs-12">
-                    <hr />
-                </div>
-            </div>
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-xs-6">
-                    <div>
-                        <select class="form-control" ng-model="gameController.vote" ng-options="vote as vote for vote in gameController.valid_votes">
-                        </select>
-                        <!--<input class="form-control" type="number" ng-model="poker.estimate" />-->
+        <div class="spectators-row">
+            <label>Spectators</label>
+            <div class="card-list">
+                <div ng-repeat="player in gameController.spectators | orderBy : 'name'">
+                    <div class="card">
+                        <div class="person">
+                            <div class="avi">
+                                <img src="https://robohash.org/{{player.name}}?size=50x50" />
+                            </div>
+                            <div class="name">{{player.name}}</div>
+                        </div>
+                    </div>
+                    <div class="admin-player-tools" ng-if="gameController.currentPlayer.is_admin">
+                        <span ng-click="gameController.submitPlaying(player.name)" title="toggle playing"><i class="fa fa-arrow-up"></i></span>
+                        <span ng-click="gameController.submitPromote(player.name)" title="promote">
+                            <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
+                        </span>
                     </div>
                 </div>
-                <div class="col-xs-3">
-                    <button class="btn btn-primary" ng-click="gameController.submitVote()">Vote</button>
-                </div>
-                <div class="col-xs-3">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <hr />
-                </div>
             </div>
         </div>
-        <div ng-if="gameController.currentPlayer.is_admin" class="row" style="margin-bottom: 10px;">
-            <div class="col-xs-3">
-                <button class="btn btn-primary" ng-click="gameController.submitReset()">Reset</button>
-            </div>
-            <div class="col-xs-3">
-                <button class="btn btn-primary" ng-click="gameController.submitReveal()">Reveal</button>
-            </div>
+
+        <div ng-if="gameController.currentPlayer.is_admin" class="admin-game-tools">
+            <button class="btn btn-primary" ng-click="gameController.submitReset()">Reset</button>
+            <button class="btn btn-primary" ng-click="gameController.submitReveal()">Reveal</button>
         </div>
-        <div ng-if="gameController.currentPlayer.is_admin" class="row" style="margin-bottom: 10px;">
-            <div class="col-xs-6">
-                <select class="form-control" ng-model="gameController.selectedUser" ng-options="user as user for user in gameController.usernames">
-                </select>
+
+
+        <div class="my-play-area">
+            <div class="my-play-area-toolbar">
+                <div><span ng-show="gameController.currentPlayer.is_player">Your Vote</span></div>
+                <div>
+                    <a ng-click="gameController.submitPlaying(gameController.currentPlayer.name)">
+                        {{ gameController.currentPlayer.is_player? 'Playing' : 'Spectating'}}</a>
+                </div>
             </div>
-            <div class="col-xs-3">
-                <button class="btn btn-primary" ng-disabled="!gameController.selectedUser" ng-click="gameController.submitPlaying(gameController.selectedUser)">Toggle Playing</button>
-            </div>
-            <div class="col-xs-3">
-                <button class="btn btn-primary" ng-disabled="!gameController.selectedUser" ng-click="gameController.submitPromote(gameController.selectedUser)">Promote</button>
+            <div class="my-vote-area" ng-show="gameController.currentPlayer.is_player">
+                <div ng-repeat="vote in gameController.valid_votes" ng-click="gameController.submitVote(vote)" ng-class="{selected: (vote === gameController.currentVote)}">{{vote}}</div>
             </div>
         </div>
     </div>

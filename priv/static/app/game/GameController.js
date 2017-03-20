@@ -3,9 +3,10 @@
 pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$state', '$stateParams',
     function ($scope, $log, PokerBoyService, $state, $stateParams) {
         var vm = this;
+        vm.currentPlayer = undefined;
+        vm.currentVote = undefined;
 
         vm.game = undefined;
-        vm.vote = null;
         vm.submitJoin = submitJoin;
         vm.submitVote = submitVote;
         vm.submitReset = submitReset;
@@ -18,7 +19,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
 
         function Init() {
             //if game was created by this client
-            if(PokerBoyService.PokerBoy.games[$stateParams.gameId]){
+            if (PokerBoyService.PokerBoy.games[$stateParams.gameId]) {
                 vm.game = PokerBoyService.PokerBoy.games[$stateParams.gameId];
                 vm.Name = vm.game.username;
                 process_state(vm.game.state);
@@ -29,58 +30,61 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
             setupWatches();
         }
 
-        function submitReset(){
+        function submitReset() {
             vm.game.reset();
         }
 
-        function submitPromote(name){
+        function submitPromote(name) {
             vm.game.user_promote(name);
         }
 
-        function submitReveal(){
+        function submitReveal() {
             vm.game.reveal();
         }
 
-        function submitPlaying(user){
+        function submitPlaying(user) {
+            console.log('user: ');
+            console.log(JSON.stringify(user));
             vm.game.toggle_playing(user);
         }
 
-        function submitJoin(form){
-            if(!form.$valid){
+        function submitJoin(form) {
+            if (!form.$valid) {
                 return;
             }
-            
+
             PokerBoyService.Join($stateParams.gameId, vm.Name)
-            .then(function(game){
-                vm.game = game;
-                vm.Name = vm.game.username;
-                vm.game.valid_votes();
+                .then(function (game) {
+                    vm.game = game;
+                    vm.Name = vm.game.username;
+                    vm.game.valid_votes();
 
-                var game_password = localStorage.getItem($stateParams.gameId);
-                if(game_password){
-                    vm.game.become_admin(game_password);
-                }
+                    var game_password = localStorage.getItem($stateParams.gameId);
+                    if (game_password) {
+                        vm.game.become_admin(game_password);
+                    }
 
-                $scope.$apply();
-            });
+                    $scope.$apply();
+                });
         }
 
-        function submitVote(){
-            vm.game.vote(vm.vote);
+        function submitVote(vote) {
+            vm.currentVote = vote;
+            vm.game.vote(vote);
         }
 
-        function process_state(state){
+        function process_state(state) {
             vm.state = state;
 
             vm.usernames = Object.keys(vm.state.users);
             vm.users = vm.usernames
                 .filter(x => vm.state.users[x].is_player)
-                .map(function(user){
+                .map(function (user) {
                     return vm.state.users[user];
                 });
             vm.spectators = vm.usernames
                 .filter(x => !vm.state.users[x].is_player)
-                .map(function(user){
+                .map(function (user) {
                     return vm.state.users[user];
                 });
 
@@ -88,23 +92,51 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
             var self = vm.usernames
                 .filter(x => vm.state.users[x].name == vm.Name)[0];
             vm.currentPlayer = vm.state.users[self];
+            if (vm.currentPlayer.vote === false) {
+                vm.currentVote = null;
+            }
+            calculateAverage(vm.users);
         }
 
-        function setupWatches(){
-            $scope.$on('update_game', function(event, state){
-                $scope.$apply(function(){
+        function calculateAverage(users) {
+            var voteCount = 0;
+            var sum = 0;
+            for (var i = 0; i < users.length; i++) {
+                if (isNumeric(users[i].vote)) {
+                    voteCount++;
+                    sum += parseInt(users[i].vote);
+                }
+            }
+            var avg = sum / voteCount;
+            if (isNaN(avg)) {
+                vm.average = undefined;
+            }
+            else {
+                vm.average = parseInt(avg);
+            }
+        }
+
+        function isNumeric(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+
+
+        function setupWatches() {
+            $scope.$on('update_game', function (event, state) {
+                $scope.$apply(function () {
+                    console.log('update_game ' + JSON.stringify(state));
                     process_state(state);
                 });
             });
 
-            $scope.$on('valid_votes', function(event, valid_votes){
-                $scope.$apply(function(){
+            $scope.$on('valid_votes', function (event, valid_votes) {
+                $scope.$apply(function () {
                     vm.valid_votes = valid_votes;
                 });
             });
 
-            $scope.$on('current_user', function(event, name){
-                $scope.$apply(function(){
+            $scope.$on('current_user', function (event, name) {
+                $scope.$apply(function () {
                     vm.Name = name;
                 });
             });
