@@ -43,8 +43,6 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         }
 
         function submitPlaying(user) {
-            console.log('user: ');
-            console.log(JSON.stringify(user));
             vm.game.toggle_playing(user);
         }
 
@@ -82,11 +80,18 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                 .map(function (user) {
                     return vm.state.users[user];
                 });
+            vm.users = vm.users.sort(function (a, b) {
+                return a.name > b.name;
+            });
+
             vm.spectators = vm.usernames
                 .filter(x => !vm.state.users[x].is_player)
                 .map(function (user) {
                     return vm.state.users[user];
                 });
+            vm.spectators = vm.spectators.sort(function (a, b) {
+                return a.name > b.name;
+            });
 
             //get name of client player
             var self = vm.usernames
@@ -99,20 +104,31 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         }
 
         function calculateAverage(users) {
+            // determine the mathmatical average
+            // and then round that number up to 
+            // the next number in the valid scale
             var voteCount = 0;
             var sum = 0;
             for (var i = 0; i < users.length; i++) {
                 if (isNumeric(users[i].vote)) {
                     voteCount++;
-                    sum += parseInt(users[i].vote);
+                    sum += parseFloat(users[i].vote);
                 }
             }
             var avg = sum / voteCount;
             if (isNaN(avg)) {
-                vm.average = undefined;
+                return vm.average = undefined;
             }
-            else {
-                vm.average = parseInt(avg);
+
+            for(var i = 1; i < vm.valid_votes.length; i++) {
+                var currentValidVote = vm.valid_votes[i];
+                if (currentValidVote === null || currentValidVote === '?') {
+                    continue;
+                }
+
+                if (parseFloat(currentValidVote) >= avg) {
+                    return vm.average = parseFloat(currentValidVote);
+                }
             }
         }
 
@@ -124,7 +140,6 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         function setupWatches() {
             $scope.$on('update_game', function (event, state) {
                 $scope.$apply(function () {
-                    console.log('update_game ' + JSON.stringify(state));
                     process_state(state);
                 });
             });
