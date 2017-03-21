@@ -5,6 +5,10 @@ html, body {
     margin: 0;
 }
 
+* {
+    user-select: none;
+}
+
 body {
     background: black;
     background-image: linear-gradient(135deg, rgba(48, 204, 252, 0.3) 0%, rgba(51, 33, 219, 0.3) 41%, rgba(143, 25, 147, 0.3) 100%);
@@ -60,6 +64,8 @@ header {
     display: flex;
     justify-content: space-around;
     margin-bottom: 5px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .my-vote-area > div {
@@ -70,11 +76,17 @@ header {
     font-size: calc(1em + 2vw);
     border-radius: 5px;
     width: calc(100%/13 - 5px);
+    transform: skew(-20deg);
     cursor: pointer;
 }
 
 .my-vote-area .selected {
     background-color: hsl(173, 71%, 34%);
+}
+
+.my-vote-area .number {
+    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 1));
+    transform: skew(20deg);
 }
 
 .card-list {
@@ -87,21 +99,22 @@ header {
     color: black;
     margin: 5px;
     width: 100px;
-    border-radius: 0 0 5px 5px;
-    margin-top: -7px;
-    padding-top: 4px;
+    border-radius: 0 0 10px 10px;
+    margin-top: -12px;
+    padding-top: 8px;
     padding-bottom: 2px;
     padding-left: 5px;
     padding-right: 5px;
     box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
 }
+
 .admin-player-tools span {
     cursor: pointer;
 }
 
 .card {
-    background-color: hsl(298, 71%, 34%);
-    border-radius: 5px;
+    background-color: hsl(298, 7%, 45%);
+    border-radius: 10px;
     color: #eee;
     margin: 5px;
     width: 100px;
@@ -110,6 +123,10 @@ header {
     position: relative;
     box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
     border: 3px solid transparent;
+}
+
+.card.voted {
+    background-color: hsl(298, 71%, 34%);
 }
 
 .card.average {
@@ -133,15 +150,16 @@ header {
     top: 5px;
     left: 0;
     right: 0;
+    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 1));
+}
+
+.spectators-row {
+    margin: 10px 5px;
 }
 
 .spectators-row .card {
     background-color: hsl(298, 71%, 20%);
     height: 70px;
-}
-
-.spectators-row label {
-    margin: 10px 5px 0;
 }
 
 .person {
@@ -155,18 +173,28 @@ header {
 }
 
 .person .avi {
-    height: 50px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 75px;
     text-align: center;
 }
 
 .person .avi img {
-    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1));
+    width: 75px;
+    height: 75px;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 }
 
 .person .name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     margin: 0 5px;
     overflow: hidden;
     text-align: center;
+    filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1));
 }
 
 .fa-arrow-up {

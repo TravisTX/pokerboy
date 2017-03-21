@@ -34,8 +34,11 @@
                     </div>
                 </div>
             </div>
-            <div ng-repeat="player in gameController.users track by player.name | orderBy : 'name'">
-                <div class="card" ng-class="{ changed: gameController.state.is_showing && player.vote != player.original_vote }">
+            <div ng-repeat="player in gameController.users track by player.name">
+                <div class="card" ng-class="{ 
+                    changed: (gameController.state.is_showing && player.vote != player.original_vote),
+                    voted: (player.vote)
+                    }">
                     <div class="previous-number">
                         <span ng-show="player.vote != player.original_vote">{{player.original_vote}}</span>
                     </div>
@@ -52,7 +55,7 @@
 
                     <div class="person">
                         <div class="avi">
-                            <img src="https://robohash.org/{{player.name}}?size=50x50" />
+                            <img src="http://robohash.travistx.me/{{player.name}}?size=75x75" />
                         </div>
                         <div class="name">{{player.name}}</div>
                     </div>
@@ -68,12 +71,13 @@
 
         <div class="spectators-row">
             <label>Spectators</label>
+            <div ng-show="gameController.spectators.length === 0">None</div>
             <div class="card-list">
-                <div ng-repeat="player in gameController.spectators | orderBy : 'name'">
+                <div ng-repeat="player in gameController.spectators">
                     <div class="card">
                         <div class="person">
                             <div class="avi">
-                                <img src="https://robohash.org/{{player.name}}?size=50x50" />
+                                <img src="http://robohash.travistx.me/{{player.name}}?size=75x75" />
                             </div>
                             <div class="name">{{player.name}}</div>
                         </div>
@@ -103,7 +107,9 @@
                 </div>
             </div>
             <div class="my-vote-area" ng-show="gameController.currentPlayer.is_player">
-                <div ng-repeat="vote in gameController.valid_votes" ng-click="gameController.submitVote(vote)" ng-class="{selected: (vote === gameController.currentVote)}">{{vote}}</div>
+                <div ng-repeat="vote in gameController.valid_votes" ng-click="gameController.submitVote(vote)" ng-class="{selected: (vote === gameController.currentVote)}">
+                    <div class="number">{{vote}}</div>
+                </div>
             </div>
         </div>
     </div>
