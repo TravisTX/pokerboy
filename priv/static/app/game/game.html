@@ -17,6 +17,15 @@
         </form>
     </div>
     <div ng-if="gameController.game">
+        <div ng-if="!gameController.roleDecided">
+            <div class="role-decide-modal">
+                <h2 class="form-signin-heading">Select Role</h2>
+                <button class="btn btn-lg btn-primary btn-block" ng-click="gameController.submitPlaying(gameController.currentPlayer.name); gameController.roleDecided = true;">Player</button>
+                <br />
+                <button class="btn btn-lg btn-primary btn-block" ng-click="gameController.roleDecided = true;">Spectator</button>
+            </div>
+        </div>
+
         <div class="all-vote-area card-list">
             <div>
                 <div class="card average clearfix">

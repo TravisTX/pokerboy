@@ -5,6 +5,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         var vm = this;
         vm.currentPlayer = undefined;
         vm.currentVote = undefined;
+        vm.roleDecided = false;
 
         vm.game = undefined;
         vm.submitJoin = submitJoin;
