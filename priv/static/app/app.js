@@ -1,7 +1,7 @@
 'use strict';
 
 // Declare app level module which depends on filters, and services
-var pPoker = angular.module('pPoker', ['ui.router', 'ui.validate', 'cgBusy', 'ui.bootstrap'])
+var pPoker = angular.module('pPoker', ['ui.router'])
     .config([
         '$urlRouterProvider', '$stateProvider', 'routes', function($urlRouterProvider, $stateProvider, routes) {
             //make urls case insensitive
