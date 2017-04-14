@@ -6,6 +6,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         vm.currentPlayer = undefined;
         vm.currentVote = undefined;
         vm.roleDecided = false;
+        vm.didFireworks = false;
 
         vm.game = undefined;
         vm.submitJoin = submitJoin;
@@ -14,6 +15,8 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         vm.submitReveal = submitReveal;
         vm.submitPlaying = submitPlaying;
         vm.submitPromote = submitPromote;
+
+        var f = new fireworks();
 
         //////////////////////
         Init();
@@ -101,7 +104,17 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
             if (vm.currentPlayer.vote === false) {
                 vm.currentVote = null;
             }
-            calculateAverage(vm.users);
+
+            if (vm.state.is_showing) {
+                calculateAverage(vm.users);
+                if (!vm.didFireworks && checkForYahtzee(vm.users)) {
+                    vm.didFireworks = true;
+                    f.launch();
+                }
+            }
+            else {
+                vm.didFireworks = false;
+            }
         }
 
         function calculateAverage(users) {
@@ -121,7 +134,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                 return vm.average = undefined;
             }
 
-            for(var i = 1; i < vm.valid_votes.length; i++) {
+            for (var i = 1; i < vm.valid_votes.length; i++) {
                 var currentValidVote = vm.valid_votes[i];
                 if (currentValidVote === null || currentValidVote === '?') {
                     continue;
@@ -131,6 +144,27 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                     return vm.average = parseFloat(currentValidVote);
                 }
             }
+        }
+
+        function checkForYahtzee(users) {
+            var voteCount = 0;
+            var firstVote = undefined;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].vote !== users[i].original_vote) {
+                    // dirty vote, get outta here
+                    return false;
+                }
+                if (isNumeric(users[i].vote)) {
+                    voteCount++;
+                    if (firstVote === undefined) {
+                        firstVote = users[i].vote;
+                    }
+                    else if (firstVote !== users[i].vote) {
+                        return false;
+                    }
+                }
+            }
+            return voteCount > 1;
         }
 
         function isNumeric(n) {
