@@ -18,6 +18,7 @@
     </div>
     <div ng-if="gameController.game">
         <div ng-if="!gameController.roleDecided">
+            <div class="modal-backdrop"></div>
             <div class="role-decide-modal">
                 <h2 class="form-signin-heading">Select Role</h2>
                 <button class="btn btn-lg btn-primary btn-block" ng-click="gameController.submitPlaying(gameController.currentPlayer.name); gameController.roleDecided = true;">Player</button>

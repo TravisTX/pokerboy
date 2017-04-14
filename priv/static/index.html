@@ -1,23 +1,24 @@
 ﻿<!DOCTYPE html>
 
 <html ng-app="pPoker">
+
 <head>
     <meta charset="utf-8" />
     <link rel="icon" href="favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Poker Bots</title>
-    
+
     <!-- build:css /mini/style.css -->
-    <link href="lib/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="lib/font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="lib/angular-busy/dl-angular-busy.css" rel="stylesheet" />
     <link href="content/site.css" rel="stylesheet" type="text/css" />
     <!-- endbuild -->
 </head>
+
 <body>
     <canvas id="fireworks-canvas"></canvas>
     <div ui-view></div>
-        
+
     <!-- build:js /mini/js/lib.js -->
     <script src="lib/angular-1.2.26/angular.min.js"></script>
     <script src="lib/angular-ui-router-0.2.10/angular-ui-router.min.js"></script>
@@ -36,17 +37,13 @@
     <script src="app/core/services/DebounceService.js"></script>
     <script src="app/core/services/PokerBoyService.js"></script>
 
-    <!--base-->
     <script src="app/base/BaseController.js"></script>
-    
-    <!--account-->
     <script src="app/create/CreateController.js"></script>
-    
-    <!--signalr-->
     <script src="app/game/fireworks.js"></script>
     <script src="app/game/GameController.js"></script>
 
     <!-- endbuild -->
     <script src="js/phoenix.js"></script>
 </body>
+
 </html>
