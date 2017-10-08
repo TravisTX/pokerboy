@@ -212,6 +212,12 @@ header {
     filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, 1));
 }
 
+.card.outlier .number {
+    color: hsl(0, 100%, 65%);
+    filter: drop-shadow(2px 2px 1px hsla(0, 100%, 26%, 1));
+    text-shadow: 0 0 11px hsla(0, 100%, 65%, 0.99);
+}
+
 .spectators-row {
     margin: 10px 5px;
 }

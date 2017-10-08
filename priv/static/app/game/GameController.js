@@ -107,6 +107,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
 
             if (vm.state.is_showing) {
                 calculateAverage(vm.users);
+                findOutliers(vm.users, vm.average);
                 if (!vm.didFireworks && checkForYahtzee(vm.users)) {
                     vm.didFireworks = true;
                     f.launch();
@@ -142,6 +143,17 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
 
                 if (parseFloat(currentValidVote) >= avg) {
                     return vm.average = parseFloat(currentValidVote);
+                }
+            }
+        }
+
+        function findOutliers(users, average) {
+            for(var i = 0; i < users.length; i++) {
+                users[i].outlier = false;
+                if (isNumeric(users[i].vote)) {
+                    if (users[i].vote > average) {
+                        users[i].outlier = true;
+                    }
                 }
             }
         }

@@ -46,12 +46,13 @@
             <div ng-repeat="player in gameController.users track by player.name">
                 <div class="card" ng-class="{ 
                     changed: (gameController.state.is_showing && player.vote != player.original_vote),
-                    voted: (player.vote)
+                    voted: (player.vote),
+                    outlier: (player.outlier)
                     }">
                     <div class="previous-number">
                         <span ng-show="player.vote != player.original_vote">{{player.original_vote}}</span>
                     </div>
-                    <div class="number">
+                    <div class="number" ng-attr-title="{{player.outlier ? 'High Risk Outlier' : ''}}">
                         <span ng-show="!gameController.state.is_showing">
                             <i class="fa" ng-class="{
                             'fa-clock-o waiting': !player.vote,
