@@ -3,7 +3,7 @@ html, body {
     height: 100%;
     padding: 0;
     margin: 0;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "kontrapunktbold";
     font-size: 14px;
     line-height: 1.42857143;
     color: #333;
@@ -20,71 +20,61 @@ html, body {
 
 body {
     background: black;
-    background-image: linear-gradient(135deg, rgba(48, 204, 252, 0.3) 0%, rgba(51, 33, 219, 0.3) 41%, rgba(143, 25, 147, 0.3) 100%);
-    color: white;
+    background-image: linear-gradient(to bottom right,#024,#402);
+    color: #eee;
+}
+
+@font-face {
+    font-family: 'kontrapunktbold';
+    src: url('kontrapunkt/Kontrapunkt-Bold-webfont.eot');
+    src: url('kontrapunkt/Kontrapunkt-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('kontrapunkt/Kontrapunkt-Bold-webfont.woff') format('woff'),
+         url('kontrapunkt/Kontrapunkt-Bold-webfont.ttf') format('truetype'),
+         url('kontrapunkt/Kontrapunkt-Bold-webfont.svg#kontrapunktbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+input, button {
+    font-family: "kontrapunktbold";
+}
+
+input {
+    width: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    font-size: 1.75em;
+    padding: .25em .5em .3125em;
+    color: rgba(255, 255, 255, 0.3);
+    border-radius: .25em;
+    background: transparent;
+    -webkit-transition: all .100s;
+    transition: all .100s;
+    margin-bottom: 10px;
+}
+input:focus {
+    outline: none;
+    color: rgba(255, 255, 255, 0.75);
+    border-color: rgba(255, 255, 255, 0.75);
 }
 
 .btn {
-    display: inline-block;
-    margin-bottom: 0;
-    font-weight: 400;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.btn-primary, .btn-primary:active, .btn-primary:focus {
+    display: block;
+    width: 100%;
+    font-size: 1.75em;
+    padding: .25em .5em .3125em;
+    border-radius: .25em;
     background-color: hsl(173, 71%, 34%);
     border-color: hsl(173, 71%, 10%);
     color: white;
+    margin-bottom: 10px;
+    cursor: pointer;
 }
 
-.btn-primary:hover {
+.btn:focus, .btn:hover {
+    outline: none;
     background-color: hsl(173, 71%, 50%);
     border-color: hsl(173, 71%, 10%);
     color: white;
-}
-
-.btn-block {
-    display: block;
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.btn-lg, .btn-group-lg>.btn {
-    padding: 10px 16px;
-    font-size: 18px;
-    line-height: 1.33;
-    border-radius: 6px;
-}
-
-.form-control {
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
 a {
@@ -103,6 +93,7 @@ header {
     justify-content: space-between;
     padding: 5px;
     box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
 }
 
 .my-play-area {
@@ -120,6 +111,7 @@ header {
     padding: 0 5px;
     display: flex;
     justify-content: space-between;
+    font-size: 18px;
 }
 
 .my-vote-area {
@@ -142,6 +134,10 @@ header {
     cursor: pointer;
 }
 
+.my-vote-area > div:hover {
+    background-color: hsl(173, 71%, 24%);
+}
+
 .my-vote-area .selected {
     background-color: hsl(173, 71%, 34%);
 }
@@ -162,8 +158,8 @@ header {
     margin: 5px;
     width: 100px;
     border-radius: 0 0 10px 10px;
-    margin-top: -12px;
-    padding-top: 8px;
+    margin-top: -13px;
+    padding-top: 9px;
     padding-bottom: 2px;
     padding-left: 5px;
     padding-right: 5px;
@@ -175,7 +171,7 @@ header {
 }
 
 .card {
-    background-color: hsl(298, 7%, 45%);
+    background-color: hsl(245, 7%, 45%);
     border-radius: 10px;
     color: #eee;
     margin: 5px;
@@ -184,7 +180,7 @@ header {
     overflow: hidden;
     position: relative;
     box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
-    border: 3px solid transparent;
+    border: 3px solid rgba(255,255,255,0.2);
 }
 
 .card.voted {
@@ -208,6 +204,7 @@ header {
 .card .number {
     text-align: center;
     font-size: 3em;
+    line-height: 1em;
     position: absolute;
     top: 5px;
     left: 0;
@@ -224,31 +221,30 @@ header {
     height: 70px;
 }
 
-.person {
-    display: flex;
-    flex-direction: column;
-    height: 70px;
+.avi {
     position: absolute;
     bottom: 0;
-    left: 0;
-    right: 0;
-}
-
-.person .avi {
-    position: absolute;
     left: 0;
     right: 0;
     height: 75px;
     text-align: center;
 }
 
-.person .avi img {
+.avi img {
     width: 75px;
     height: 75px;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.5));
 }
 
-.person .name {
+.player-name {
+    overflow: hidden;
+    text-align: center;
+    width: 100px;
+    margin: 0 5px;
+    font-size: 16px;
+}
+
+.average-label {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -257,6 +253,7 @@ header {
     overflow: hidden;
     text-align: center;
     filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 1));
+    font-size: 16px;
 }
 
 .fa-arrow-up {
@@ -279,6 +276,12 @@ header {
     margin: 10px 5px;
 }
 
+.admin-game-tools .btn {
+    display: inline;
+    width: auto;
+    font-size: 1em;
+}
+
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -295,10 +298,12 @@ header {
     width: 400px;
     margin-left: -200px;
     margin-top: 10px;
-    background-color: white;
-    color: #333;
+    background-color: rgba(255,255,255,0.2);
+    color: #eee;
     z-index: 1;
     padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 50px 5px rgba(0, 0, 0, 0.2);
 }
 
 #fireworks-canvas {

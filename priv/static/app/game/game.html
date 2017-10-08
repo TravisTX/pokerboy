@@ -12,7 +12,7 @@
             <div style="max-width: 500px; margin: 0 auto;">
                 <h2 class="form-signin-heading">Pick a name</h2>
                 <input type="text" autofocus="" class="form-control" required name="Name" ng-model="gameController.Name" placeholder="Your Name" />
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Join Game</button>
+                <button class="btn" type="submit">Join Game</button>
             </div>
         </form>
     </div>
@@ -21,9 +21,9 @@
             <div class="modal-backdrop"></div>
             <div class="role-decide-modal">
                 <h2 class="form-signin-heading">Select Role</h2>
-                <button class="btn btn-lg btn-primary btn-block" ng-click="gameController.submitPlaying(gameController.currentPlayer.name); gameController.roleDecided = true;">Player</button>
+                <button class="btn" ng-click="gameController.submitPlaying(gameController.currentPlayer.name); gameController.roleDecided = true;">Player</button>
                 <br />
-                <button class="btn btn-lg btn-primary btn-block" ng-click="gameController.roleDecided = true;">Spectator</button>
+                <button class="btn" ng-click="gameController.roleDecided = true;">Spectator</button>
             </div>
         </div>
 
@@ -38,9 +38,8 @@
                         <span ng-show="gameController.state.is_showing">{{gameController.average}}</span>
                     </div>
 
-                    <div class="person">
-                        <div class="avi"></div>
-                        <div class="name">Average</div>
+                    <div class="average-label">
+                        Average
                     </div>
                 </div>
             </div>
@@ -63,11 +62,8 @@
                         <span ng-show="gameController.state.is_showing">{{player.vote || '?'}}</span>
                     </div>
 
-                    <div class="person">
-                        <div class="avi">
-                            <img src="http://robohash.travistx.me/{{player.name}}?size=75x75" />
-                        </div>
-                        <div class="name">{{player.name}}</div>
+                    <div class="avi">
+                        <img src="http://robohash.travistx.me/{{player.name}}?size=75x75" />
                     </div>
                 </div>
                 <div class="admin-player-tools" ng-if="gameController.currentPlayer.is_admin">
@@ -76,6 +72,7 @@
                         <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
                     </span>
                 </div>
+                <div class="player-name">{{player.name}}</div>
             </div>
         </div>
 
@@ -89,7 +86,6 @@
                             <div class="avi">
                                 <img src="http://robohash.travistx.me/{{player.name}}?size=75x75" />
                             </div>
-                            <div class="name">{{player.name}}</div>
                         </div>
                     </div>
                     <div class="admin-player-tools" ng-if="gameController.currentPlayer.is_admin">
@@ -98,13 +94,14 @@
                             <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
                         </span>
                     </div>
+                    <div class="player-name">{{player.name}}</div>
                 </div>
             </div>
         </div>
 
         <div ng-if="gameController.currentPlayer.is_admin" class="admin-game-tools">
-            <button class="btn btn-primary" ng-click="gameController.submitReset()">Reset</button>
-            <button class="btn btn-primary" ng-click="gameController.submitReveal()">Reveal</button>
+            <button class="btn" ng-click="gameController.submitReset()">Reset</button>
+            <button class="btn" ng-click="gameController.submitReveal()">Reveal</button>
         </div>
 
 
