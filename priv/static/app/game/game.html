@@ -72,7 +72,9 @@
                         <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
                     </span>
                 </div>
-                <div class="player-name">{{player.name}}</div>
+                <div class="player-name" ng-class="{admin: (player.is_admin)}" ng-attr-title="{{player.is_admin ? 'admin' : ''}}">
+                    {{player.name}}
+                </div>
             </div>
         </div>
 
@@ -94,7 +96,9 @@
                             <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
                         </span>
                     </div>
-                    <div class="player-name">{{player.name}}</div>
+                    <div class="player-name" ng-class="{admin: (player.is_admin)}" ng-attr-title="{{player.is_admin ? 'admin' : ''}}">
+                        {{player.name}}
+                    </div>
                 </div>
             </div>
         </div>
