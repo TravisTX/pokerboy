@@ -18,7 +18,7 @@ pPoker.factory('PokerBoyService',
                 };
 
                 function init(){
-                    socket = new Phoenix.Socket('wss://planning.falk.pw/socket');
+                    socket = new Phoenix.Socket('/socket');
                     socket.logger = (kind, msg, data) => { console.log(`${kind}: ${msg}`, data) };
                     socket.connect();
                 }
