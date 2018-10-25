@@ -61,11 +61,6 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                     vm.Name = vm.game.username;
                     vm.game.valid_votes();
 
-                    var game_password = localStorage.getItem($stateParams.gameId);
-                    if (game_password) {
-                        vm.game.become_admin(game_password);
-                    }
-
                     $scope.$apply();
                 });
         }

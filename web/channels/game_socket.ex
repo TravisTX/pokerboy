@@ -35,20 +35,6 @@ defmodule Pokerboy.GameChannel do
     {:noreply, socket}
   end
 
-  def handle_in("become_admin", %{"password"=>password}, socket) do
-    resp = Pokerboy.Gameserver.become_admin(socket.assigns.game_id, socket.assigns.name, password)
-
-    update_game(socket, resp)
-    {:noreply, socket}
-  end
-
-  def handle_in("user_promote", %{"user"=>name}, socket) do
-    resp = Pokerboy.Gameserver.user_promote(socket.assigns.game_id, socket.assigns.user_id, name)
-
-    update_game(socket, resp)
-    {:noreply, socket}
-  end
-
   def handle_in("user_vote", %{"vote"=>vote}, socket) do
     resp = Pokerboy.Gameserver.user_vote(socket.assigns.game_id, socket.assigns.user_id, vote)
     

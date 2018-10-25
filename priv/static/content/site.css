@@ -250,10 +250,6 @@ header {
     font-size: 16px;
 }
 
-.player-name.admin {
-    color: #eeee00;
-}
-
 .average-label {
     position: absolute;
     bottom: 0;

@@ -67,13 +67,10 @@
                         <img src="robot/{{player.name}}?size=75x75" />
                     </div>
                 </div>
-                <div class="admin-player-tools" ng-if="gameController.currentPlayer.is_admin">
+                <div class="admin-player-tools">
                     <span ng-click="gameController.submitPlaying(player.name)" title="toggle playing"><i class="fa fa-arrow-down"></i></span>
-                    <span ng-click="gameController.submitPromote(player.name)" title="promote">
-                        <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
-                    </span>
                 </div>
-                <div class="player-name" ng-class="{admin: (player.is_admin)}" ng-attr-title="{{player.is_admin ? 'admin' : ''}}">
+                <div class="player-name">
                     {{player.name}}
                 </div>
             </div>
@@ -91,20 +88,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="admin-player-tools" ng-if="gameController.currentPlayer.is_admin">
+                    <div class="admin-player-tools">
                         <span ng-click="gameController.submitPlaying(player.name)" title="toggle playing"><i class="fa fa-arrow-up"></i></span>
-                        <span ng-click="gameController.submitPromote(player.name)" title="promote">
-                            <i class="fa" ng-class="{'fa-star': (player.is_admin), 'fa-star-o': (!player.is_admin)}"></i>
-                        </span>
                     </div>
-                    <div class="player-name" ng-class="{admin: (player.is_admin)}" ng-attr-title="{{player.is_admin ? 'admin' : ''}}">
+                    <div class="player-name">
                         {{player.name}}
                     </div>
                 </div>
             </div>
         </div>
 
-        <div ng-if="gameController.currentPlayer.is_admin" class="admin-game-tools">
+        <div class="admin-game-tools">
             <button class="btn" ng-click="gameController.submitReset()">Reset</button>
             <button class="btn" ng-click="gameController.submitReveal()">Reveal</button>
         </div>

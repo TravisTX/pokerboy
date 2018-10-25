@@ -6,7 +6,6 @@ pPoker.factory('PokerBoyService',
             var PokerBoy = (function () {
                 var socket,
                 game_uuid,
-                game_password,
                 game;
                 var gamesMap = {};
                 
@@ -32,14 +31,12 @@ pPoker.factory('PokerBoyService',
                     channel.push('create', {name: game_name});
                     channel.on('created', game => {
                         game_uuid = game.uuid;
-                        game_password = game.password;
-                        localStorage.setItem(game_uuid, game_password);
                         channel.leave();
                         resolve();
                     });
                     })
                     .then(function(){
-                    return new Game(game_uuid, user_name, game_password);
+                    return new Game(game_uuid, user_name);
                     })
                     .then(function(game){
                     gamesMap[game.id] = game;
@@ -51,11 +48,9 @@ pPoker.factory('PokerBoyService',
                     return new Game(game_uuid, user_name);
                 }
 
-                function Game(game_uuid, username, password){
+                function Game(game_uuid, username){
                     var self = this, game_state = {};
 
-                    this.become_admin = become_admin;
-                    this.user_promote = user_promote;
                     this.toggle_playing = toggle_playing;
                     this.valid_votes = valid_votes;
                     this.reveal = reveal;
@@ -63,7 +58,6 @@ pPoker.factory('PokerBoyService',
                     this.vote = vote;
                     this.state = game_state;
                     this.id = game_uuid;
-                    this.password = password;
                     this.username = username;
 
                     //runs on new to return promise which resovles with game object
@@ -87,24 +81,10 @@ pPoker.factory('PokerBoyService',
                                 reject("failed to connect to game");
                             }
                         }, 10);
-                    })
-                    .then(function(game){
-                        if(game.password){
-                            game.become_admin(game.password);
-                        }
-                        return game;
                     });
 
                     function vote(vote){
                         game.push('user_vote', {vote: vote});
-                    }
-
-                    function become_admin(password){
-                        game.push('become_admin', {password: password || game_password});
-                    }
-
-                    function user_promote(user_name){
-                        game.push('user_promote', {user: user_name});
                     }
 
                     function toggle_playing(user_name){
