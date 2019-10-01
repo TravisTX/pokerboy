@@ -3,8 +3,9 @@
         <div>
             <b>Poker Bots</b>
         </div>
-        <div>
+        <div ng-if="gameController.game">
             {{gameController.currentPlayer.name}}
+            <a ng-click="gameController.submitLogOff()">Log Off</a>
         </div>
     </header>
     <div ng-if="!gameController.game">
@@ -20,7 +21,7 @@
         <div ng-if="!gameController.roleDecided">
             <div class="modal-backdrop"></div>
             <div class="role-decide-modal">
-                <h2 class="form-signin-heading">Select Role</h2>
+                <h2 class="form-signin-heading">Select Role, {{gameController.currentPlayer.name}}</h2>
                 <button class="btn" ng-click="gameController.submitPlaying(gameController.currentPlayer.name); gameController.roleDecided = true;">Player</button>
                 <br />
                 <button class="btn" ng-click="gameController.roleDecided = true;">Spectator</button>

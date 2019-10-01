@@ -15,6 +15,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         vm.submitReveal = submitReveal;
         vm.submitPlaying = submitPlaying;
         vm.submitPromote = submitPromote;
+        vm.submitLogOff = submitLogOff;
 
         var f = new fireworks();
 
@@ -29,6 +30,10 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                 process_state(vm.game.state);
 
                 vm.game.valid_votes();
+            }
+
+            if (localStorage['name']) {
+                join($stateParams.gameId, localStorage['name']);
             }
 
             setupWatches();
@@ -55,10 +60,19 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                 return;
             }
 
-            PokerBoyService.Join($stateParams.gameId, vm.Name)
+            join ($stateParams.gameId, vm.Name);
+        }
+
+        function submitLogOff() {
+            localStorage.removeItem('name');
+            location.reload(true);
+        }
+
+        function join(gameId, name) {
+            PokerBoyService.Join(gameId, name)
                 .then(function (game) {
                     vm.game = game;
-                    vm.Name = vm.game.username;
+                    vm.Name = localStorage['name'] = vm.game.username;
                     vm.game.valid_votes();
 
                     $scope.$apply();
