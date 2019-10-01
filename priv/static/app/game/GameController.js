@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$state', '$stateParams',
-    function ($scope, $log, PokerBoyService, $state, $stateParams) {
+pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$state', '$stateParams', '$rootScope',
+    function ($scope, $log, PokerBoyService, $state, $stateParams, $rootScope) {
         var vm = this;
         vm.currentPlayer = undefined;
         vm.currentVote = undefined;
@@ -23,6 +23,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         Init();
 
         function Init() {
+            setTitle(null);
             //if game was created by this client
             if (PokerBoyService.PokerBoy.games[$stateParams.gameId]) {
                 vm.game = PokerBoyService.PokerBoy.games[$stateParams.gameId];
@@ -125,6 +126,53 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
             else {
                 vm.didFireworks = false;
             }
+            processTitle();
+        }
+
+        function processTitle() {
+            if (vm.state.is_showing && vm.average) {
+                var title = `Avg: ${vm.average} [`;
+
+                for (var i = 0; i < vm.users.length; i++) {
+                    title += getTitleChar(vm.average, vm.users[i].vote, vm.users[i].outlier);
+                }
+                title += ']';
+                setTitle(title);
+            }
+            else {
+                var voteCount = 0;
+                for (var i = 0; i < vm.users.length; i++) {
+                    if (vm.users[i].vote) {
+                        voteCount++;
+                    }
+                }
+                setTitle(`[${voteCount}/${vm.users.length}]`);
+            }
+        }
+
+        function getTitleChar(avg, vote) {
+            if (!isNumeric(vote)) {
+                return '?';
+            }
+            if (vote < avg) {
+                return '🞃';
+            }
+            if (vote > avg) {
+                return '🞁';
+            }
+            if (vote == avg) {
+                return '•';
+            }
+            return '?';
+        }
+
+        function setTitle(title) {
+            if (title) {
+                $rootScope.title = title + ' - Poker Bots';
+            }
+            else {
+                $rootScope.title = 'Poker Bots';
+            }
         }
 
         function calculateAverage(users) {
@@ -191,7 +239,6 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         function isNumeric(n) {
             return !isNaN(parseFloat(n)) && isFinite(n);
         }
-
 
         function setupWatches() {
             $scope.$on('update_game', function (event, state) {
