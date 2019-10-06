@@ -61,7 +61,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                 return;
             }
 
-            join ($stateParams.gameId, vm.Name);
+            join($stateParams.gameId, vm.Name);
         }
 
         function submitLogOff() {
@@ -93,19 +93,23 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
                 .filter(x => vm.state.users[x].is_player)
                 .map(function (user) {
                     return vm.state.users[user];
+                })
+                .sort(function (a, b) {
+                    var alc = a.name.toLowerCase();
+                    var blc = b.name.toLowerCase();
+                    return alc > blc ? 1 : alc < blc ? -1 : 0;
                 });
-            vm.users = vm.users.sort(function (a, b) {
-                return a.name > b.name;
-            });
 
             vm.spectators = vm.usernames
                 .filter(x => !vm.state.users[x].is_player)
                 .map(function (user) {
                     return vm.state.users[user];
+                })
+                .sort(function (a, b) {
+                    var alc = a.name.toLowerCase();
+                    var blc = b.name.toLowerCase();
+                    return alc > blc ? 1 : alc < blc ? -1 : 0;
                 });
-            vm.spectators = vm.spectators.sort(function (a, b) {
-                return a.name > b.name;
-            });
 
             //get name of client player
             var self = vm.usernames
@@ -205,7 +209,7 @@ pPoker.controller('GameController', ['$scope', '$log', 'PokerBoyService', '$stat
         }
 
         function findOutliers(users, average) {
-            for(var i = 0; i < users.length; i++) {
+            for (var i = 0; i < users.length; i++) {
                 users[i].outlier = false;
                 if (isNumeric(users[i].vote)) {
                     if (users[i].vote > average) {
